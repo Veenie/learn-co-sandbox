@@ -1,27 +1,31 @@
 require 'net/http'
 require 'open-uri'
 require 'json'
- 
-class GetPrograms
- 
-  URL = "http://data.cityofnewyork.us/resource/uvks-tn5n.json"
- 
-  def get_programs
-    uri = URI.parse(URL)
-    response = Net::HTTP.get_response(uri)
-    response.body
-  end
-  def program_school
-# we use the JSON library to parse the API response into nicely formatted JSON
-    programs = JSON.parse(self.get_programs)
-    programs.collect do |program|
-      program["agency"]  
-    end
-  end
-end  
+require 'pry'
 
-programs = GetPrograms.new
-puts programs.program_school.uniq
- 
-#programs = GetPrograms.new.get_programs
-#puts programs
+
+
+class Scraper
+  
+#puts doc
+
+  @titles = []
+
+
+
+  def simplify
+    site = "https://en.wikipedia.org/wiki/List_of_ThunderCats_(2011_TV_series)_episodes"
+
+    doc = Nokogiri::HTML(open(site))
+    eptitle = doc.css("td.summary")
+    simpletitle = eptitle.text
+
+    simpletitle.select do |title|
+      @titles << title
+      @titles
+    end  
+  end
+
+
+@titles
+end
